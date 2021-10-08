@@ -2,12 +2,21 @@ import os
 
 import pymongo
 from fastapi import FastAPI, Request
+from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
 client = pymongo.MongoClient(os.getenv("MONGO_URL"))
 db = client['pizzaria']
 pedidos = db['pedidos']
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.post(
